@@ -1,7 +1,8 @@
-package me.kevsal.minecraft;
+package me.kevsal.minecraft.jsonconfig;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.File;
@@ -30,6 +31,9 @@ public class JsonConfiguration {
     @Getter
     private final JsonObject jsonObject;
 
+    @Getter
+    private final Class<JsonConfigOwner> ownerClass;
+
     /***
      * Name of this configuration
      */
@@ -40,14 +44,17 @@ public class JsonConfiguration {
      * Create a new instance of the JsonConfiguration class, and setup all functionality required
      * @param dataFolder The data/config folder
      * @param configName Name of this configuration
+     * @param ownerClass The class that owns this configuration
      */
-    public JsonConfiguration(File dataFolder, String configName) throws IOException {
+    @Builder
+    private JsonConfiguration(File dataFolder, String configName, Class<JsonConfigOwner> ownerClass) throws IOException {
+        this.ownerClass = ownerClass;
         this.file = new File(dataFolder, configName);
 
         // Copy the original file from resources to the disk if it doesn't exist
         try {
             // Do not overwrite
-            Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/%s".formatted(configName))), file.toPath());
+            Files.copy(Objects.requireNonNull(ownerClass.getResourceAsStream("/%s".formatted(configName))), file.toPath());
         } catch (FileAlreadyExistsException ignored) {
             // File already exists, do nothing
         }
@@ -68,10 +75,17 @@ public class JsonConfiguration {
         } catch (IOException e) {
             content = "{}";
             e.printStackTrace();
-            Logger.getGlobal().warning("[GBMCCore - JsonConfiguration] [%s] Failed to read file %s".formatted(configName, file.toString()));
         }
 
         return JsonParser.parseString(content).getAsJsonObject();
     }
 
+    /***
+     * Save the JsonObject to the file
+     * @param jsonObject The JsonObject to save
+     * @throws IOException If the file cannot be written to
+     */
+    public void save(JsonObject jsonObject) throws IOException {
+        Files.write(file.toPath(), jsonObject.toString().getBytes());
+    }
 }
