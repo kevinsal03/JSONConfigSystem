@@ -21,9 +21,9 @@ public class JsonConfigProvider {
     @Getter
     private final File dataFolder;
     @Getter
-    private final Class<JsonConfigOwner> ownerClass;
+    private final Class<?> ownerClass;
 
-    private JsonConfigProvider (Class<JsonConfigOwner> ownerClass, File dataFolder) {
+    private JsonConfigProvider (Class<?> ownerClass, File dataFolder) {
         this.dataFolder = dataFolder;
         this.ownerClass = ownerClass;
         if (!dataFolder.exists()) {
