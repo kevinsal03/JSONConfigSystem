@@ -32,7 +32,7 @@ public class JsonConfiguration {
     private final JsonObject jsonObject;
 
     @Getter
-    private final Class<JsonConfigOwner> ownerClass;
+    private final Class<?> ownerClass;
 
     /***
      * Name of this configuration
@@ -47,7 +47,7 @@ public class JsonConfiguration {
      * @param ownerClass The class that owns this configuration
      */
     @Builder
-    private JsonConfiguration(File dataFolder, String configName, Class<JsonConfigOwner> ownerClass) throws IOException {
+    private JsonConfiguration(File dataFolder, String configName, Class<?> ownerClass) throws IOException {
         this.ownerClass = ownerClass;
         this.file = new File(dataFolder, configName);
 

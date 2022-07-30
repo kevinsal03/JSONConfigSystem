@@ -69,7 +69,7 @@ public class JsonConfigProvider {
      */
     public static class JsonConfigProviderBuilder {
         private File dataFolder;
-        private Class<JsonConfigOwner> ownerClass;
+        private Class<?> ownerClass;
 
         /**
          * @param dataFolder The folder that configurations should be stored in
@@ -84,7 +84,7 @@ public class JsonConfigProvider {
          * @param clazz The class that is using this provider
          * @return The builder
          */
-        public JsonConfigProviderBuilder ownerClass(Class<JsonConfigOwner> clazz) {
+        public JsonConfigProviderBuilder ownerClass(Class<?> clazz) {
             this.ownerClass = clazz;
             return this;
         }
