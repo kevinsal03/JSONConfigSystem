@@ -55,6 +55,7 @@ public class JsonConfigProvider {
         }
         JsonConfiguration jsonConfiguration = new JsonConfiguration.JsonConfigurationBuilder()
                 .dataFolder(dataFolder)
+                .ownerClass(ownerClass)
                 .configName(configName + ".json")
                 .build();
         jsonConfigurationConcurrentHashMap.put(configName, jsonConfiguration);
